@@ -290,6 +290,11 @@ endforeach ()
 add_library(fmt src/format.cc ${FMT_HEADERS} README.md ChangeLog.md)
 setup_target(fmt PUBLIC)
 set_target_properties(fmt PROPERTIES PUBLIC_HEADER "${FMT_HEADERS}")
+if (CMAKE_VERSION VERSION_GREATER_EQUAL 3.28
+    AND CMAKE_CXX_COMPILER_ID STREQUAL "Clang"
+    AND NOT CMAKE_CXX_COMPILER_CLANG_SCAN_DEPS)
+  set_target_properties(fmt PROPERTIES CXX_SCAN_FOR_MODULES OFF)
+endif ()
 
 if (FMT_OS)
   target_sources(fmt PRIVATE src/os.cc)
